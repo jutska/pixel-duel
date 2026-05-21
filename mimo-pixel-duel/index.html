@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Duel - AI Card Battle Game</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%23111' width='32' height='32'/><text x='4' y='24' font-size='20'>🃏</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- TITLE SCREEN -->
+    <div id="title-screen" class="screen active">
+        <div class="scanlines"></div>
+        <div class="title-container">
+            <div class="pixel-logo">
+                <h1 class="game-title glitch" data-text="PIXEL DUEL">PIXEL DUEL</h1>
+                <p class="subtitle">AI-Powered Card Battle</p>
+            </div>
+            <div class="title-card-showcase">
+                <div class="showcase-card card-float-1"></div>
+                <div class="showcase-card card-float-2"></div>
+                <div class="showcase-card card-float-3"></div>
+            </div>
+            <p class="version-badge">BETA 0.0.9 — Still in Development</p>
+            <div class="menu-buttons">
+                <button class="pixel-btn" onclick="startDuel()">⚔️ START DUEL</button>
+                <button class="pixel-btn" onclick="showDeckBuilder()">📋 DECK BUILDER</button>
+                <button class="pixel-btn" onclick="showHowToPlay()">📖 HOW TO PLAY</button>
+                <button class="pixel-btn" onclick="showSettings()">⚙️ SETTINGS</button>
+            </div>
+            <div class="mimo-badge">
+                <span class="badge-text">Powered by</span>
+                <span class="badge-logo">Xiaomi MiMo AI</span>
+                <span class="badge-sub">100T Token Creator Program</span>
+            </div>
+            <div class="version-footer">v0.0.9-beta</div>
+        </div>
+    </div>
+
+    <!-- HOW TO PLAY SCREEN -->
+    <div id="howtoplay-screen" class="screen">
+        <div class="scanlines"></div>
+        <div class="howto-container">
+            <h2 class="section-title">HOW TO PLAY</h2>
+            <div class="howto-content">
+                <div class="howto-section">
+                    <h3>⚔️ OBJECTIVE</h3>
+                    <p>Reduce your opponent's Life Points (LP) to 0 to win the duel!</p>
+                </div>
+                <div class="howto-section">
+                    <h3>🃏 CARD TYPES</h3>
+                    <p><span class="card-type-monster">MONSTER</span> - Summon to attack or defend</p>
+                    <p><span class="card-type-spell">SPELL</span> - Instant effects (heal, damage, buff)</p>
+                    <p><span class="card-type-trap">TRAP</span> - Set face-down, activate on opponent's turn</p>
+                </div>
+                <div class="howto-section">
+                    <h3>🎮 TURN PHASES</h3>
+                    <p>1. <strong>DRAW</strong> - Draw a card from your deck</p>
+                    <p>2. <strong>MAIN</strong> - Summon monsters, set spells/traps</p>
+                    <p>3. <strong>BATTLE</strong> - Attack with your monsters</p>
+                    <p>4. <strong>END</strong> - End your turn</p>
+                </div>
+                <div class="howto-section">
+                    <h3>🤖 AI OPPONENT</h3>
+                    <p>Your opponent is powered by Xiaomi MiMo AI! It adapts its strategy each duel.</p>
+                </div>
+            </div>
+            <button class="pixel-btn" onclick="showTitle()">← BACK</button>
+        </div>
+    </div>
+
+    <!-- DECK BUILDER SCREEN -->
+    <div id="deck-screen" class="screen">
+        <div class="scanlines"></div>
+        <div class="deck-container">
+            <h2 class="section-title">DECK BUILDER</h2>
+            <div class="deck-info">
+                <span>Cards in deck: <span id="deck-count">20</span>/20</span>
+            </div>
+            <div class="deck-grid" id="deck-grid"></div>
+            <div class="deck-actions">
+                <button class="pixel-btn" onclick="randomDeck()">🎲 RANDOM DECK</button>
+                <button class="pixel-btn" onclick="showTitle()">← BACK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS SCREEN -->
+    <div id="settings-screen" class="screen">
+        <div class="scanlines"></div>
+        <div class="settings-container">
+            <h2 class="section-title">SETTINGS</h2>
+            <div class="settings-content">
+                <div class="setting-item">
+                    <label>AI Difficulty</label>
+                    <select id="ai-difficulty" class="pixel-select">
+                        <option value="easy">EASY</option>
+                        <option value="normal" selected>NORMAL</option>
+                        <option value="hard">HARD</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>MiMo API Key</label>
+                    <input type="password" id="mimo-api-key" class="pixel-input" placeholder="Enter API key...">
+                </div>
+                <div class="setting-item">
+                    <label>Sound Effects</label>
+                    <select id="sfx-toggle" class="pixel-select">
+                        <option value="on" selected>ON</option>
+                        <option value="off">OFF</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Animation Speed</label>
+                    <select id="anim-speed" class="pixel-select">
+                        <option value="fast">FAST</option>
+                        <option value="normal" selected>NORMAL</option>
+                        <option value="slow">SLOW</option>
+                    </select>
+                </div>
+                <div class="setting-item mimo-info">
+                    <p>🤖 Get your MiMo API key at:</p>
+                    <a href="https://platform.xiaomimimo.com" target="_blank" class="mimo-link">platform.xiaomimimo.com</a>
+                    <p class="mimo-promo">Join the 100T Token Creator Program!</p>
+                    <a href="https://100t.xiaomimimo.com/" target="_blank" class="mimo-link">100t.xiaomimimo.com</a>
+                </div>
+            </div>
+            <button class="pixel-btn" onclick="saveSettings(); showTitle()">💾 SAVE & BACK</button>
+        </div>
+    </div>
+
+    <!-- DUEL SCREEN -->
+    <div id="duel-screen" class="screen">
+        <div class="scanlines"></div>
+        
+        <!-- Duel HUD -->
+        <div class="duel-hud">
+            <div class="player-info opponent-info">
+                <div class="player-avatar opponent-avatar">🤖</div>
+                <div class="player-stats">
+                    <span class="player-name">MiMo AI</span>
+                    <div class="lp-bar">
+                        <div class="lp-fill opponent-lp-fill" id="opponent-lp-bar"></div>
+                        <span class="lp-text" id="opponent-lp">4000</span>
+                    </div>
+                    <span class="deck-remaining">Deck: <span id="opponent-deck-count">15</span></span>
+                </div>
+            </div>
+            <div class="turn-indicator">
+                <span id="phase-display">DRAW PHASE</span>
+                <span id="turn-count">Turn 1</span>
+            </div>
+            <div class="player-info player-self-info">
+                <div class="player-avatar self-avatar">⚔️</div>
+                <div class="player-stats">
+                    <span class="player-name">DUELIST</span>
+                    <div class="lp-bar">
+                        <div class="lp-fill player-lp-fill" id="player-lp-bar"></div>
+                        <span class="lp-text" id="player-lp">4000</span>
+                    </div>
+                    <span class="deck-remaining">Deck: <span id="player-deck-count">15</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Field -->
+        <div class="game-field">
+            <!-- Opponent's field -->
+            <div class="field-row opponent-field">
+                <div class="field-zone spell-zone" id="opp-spell-1"></div>
+                <div class="field-zone spell-zone" id="opp-spell-2"></div>
+                <div class="field-zone spell-zone" id="opp-spell-3"></div>
+            </div>
+            <div class="field-row opponent-field">
+                <div class="field-zone monster-zone" id="opp-monster-1"></div>
+                <div class="field-zone monster-zone" id="opp-monster-2"></div>
+                <div class="field-zone monster-zone" id="opp-monster-3"></div>
+            </div>
+
+            <!-- Center divider -->
+            <div class="field-divider">
+                <div class="divider-orb"></div>
+            </div>
+
+            <!-- Player's field -->
+            <div class="field-row player-field">
+                <div class="field-zone monster-zone" id="player-monster-1" onclick="selectZone(this)"></div>
+                <div class="field-zone monster-zone" id="player-monster-2" onclick="selectZone(this)"></div>
+                <div class="field-zone monster-zone" id="player-monster-3" onclick="selectZone(this)"></div>
+            </div>
+            <div class="field-row player-field">
+                <div class="field-zone spell-zone" id="player-spell-1" onclick="selectZone(this)"></div>
+                <div class="field-zone spell-zone" id="player-spell-2" onclick="selectZone(this)"></div>
+                <div class="field-zone spell-zone" id="player-spell-3" onclick="selectZone(this)"></div>
+            </div>
+        </div>
+
+        <!-- Player Hand -->
+        <div class="player-hand" id="player-hand"></div>
+
+        <!-- Action Buttons -->
+        <div class="action-bar">
+            <button class="pixel-btn action-btn" id="btn-summon" onclick="summonCard()" disabled>SUMMON</button>
+            <button class="pixel-btn action-btn" id="btn-set" onclick="setCard()" disabled>SET</button>
+            <button class="pixel-btn action-btn" id="btn-attack" onclick="enterBattlePhase()" disabled>BATTLE</button>
+            <button class="pixel-btn action-btn" id="btn-end" onclick="endTurn()">END TURN</button>
+        </div>
+
+        <!-- Battle Log -->
+        <div class="battle-log" id="battle-log">
+            <div class="log-entry">Duel Start! Draw your cards!</div>
+        </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="screen">
+        <div class="scanlines"></div>
+        <div class="result-container">
+            <h2 class="result-title" id="result-title">YOU WIN!</h2>
+            <div class="result-stats" id="result-stats"></div>
+            <div class="result-actions">
+                <button class="pixel-btn" onclick="startDuel()">⚔️ REMATCH</button>
+                <button class="pixel-btn" onclick="showTitle()">🏠 MENU</button>
+            </div>
+            <div class="mimo-credit">
+                <p>AI Opponent powered by Xiaomi MiMo</p>
+                <a href="https://100t.xiaomimimo.com/" target="_blank" class="mimo-link">Join 100T Token Creator Program →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Detail Modal -->
+    <div class="card-modal" id="card-modal" onclick="closeCardModal()">
+        <div class="card-modal-content" onclick="event.stopPropagation()">
+            <div class="modal-card" id="modal-card"></div>
+            <div class="modal-info" id="modal-info"></div>
+            <button class="pixel-btn" onclick="closeCardModal()">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- Version Indicator -->
+    <div class="global-version">BETA 0.0.9</div>
+
+    <!-- Damage Animation Overlay -->
+    <div class="damage-overlay" id="damage-overlay"></div>
+
+    <script src="cards.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
